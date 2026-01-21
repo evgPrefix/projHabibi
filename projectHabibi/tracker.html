@@ -1,0 +1,38 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>HabitPop - Трекер</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link href="https://fonts.googleapis.com/css2?family=Fraunces:opsz,wght@9..144,300;600&family=Inter:wght@400;600&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="style.css">
+</head>
+<body class="tracker-body">
+
+    <header>
+        <div class="logo">HabitPop ✦</div>
+        <div style="display: flex; gap: 10px; align-items: center;">
+            <div class="sync-status" id="syncStatus">
+                <div class="dot active"></div>
+                <span>Online</span>
+            </div>
+            <button id="logoutBtn" style="padding: 5px 10px; border: 1px solid #2d2d2d; background: transparent; border-radius: 8px; cursor: pointer; font-family: 'Inter';">Выйти</button>
+        </div>
+    </header>
+
+    <div class="controls">
+        <input type="text" id="newHabitInput" placeholder="Новая привычка...">
+        <button class="btn-add" id="addHabitBtn">+</button>
+    </div>
+
+    <div class="tracker-container">
+        <div class="table-wrapper">
+            <table id="trackerTable">
+                </table>
+        </div>
+    </div>
+
+    <script type="module" src="script.js"></script>
+</body>
+</html>
