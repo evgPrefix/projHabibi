@@ -1,0 +1,41 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>HabitPop - Вход</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link href="https://fonts.googleapis.com/css2?family=Fraunces:opsz,wght@9..144,300;600&family=Inter:wght@400;600&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="style.css">
+</head>
+<body class="login-body">
+
+    <div class="container">
+        <div class="auth-card">
+            <div class="decorative-sticker">Beta</div>
+            <h1>HabitPop</h1>
+            <p id="auth-subtitle">Твой спокойный ритм жизни.</p>
+            
+            <form id="authForm">
+                <div class="input-group">
+                    <label>Email</label>
+                    <input type="email" id="email" placeholder="hello@you.com" required>
+                </div>
+                <div class="input-group">
+                    <label>Пароль</label>
+                    <input type="password" id="password" placeholder="••••••••" required>
+                </div>
+                <p id="error-msg" style="color: #ff6b6b; font-size: 0.8rem; display: none; margin-bottom: 10px;"></p>
+                
+                <button type="submit" class="btn-primary" id="submit-btn">Войти</button>
+            </form>
+
+            <p id="toggle-auth" style="margin-top: 20px; font-size: 0.9rem; text-decoration: underline; cursor: pointer;">
+                Нет аккаунта? Создать
+            </p>
+        </div>
+    </div>
+
+    <script type="module" src="script.js"></script>
+</body>
+</html>
