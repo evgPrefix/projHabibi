@@ -5,8 +5,12 @@ import { getFirestore, collection, addDoc, query, where, onSnapshot, updateDoc, 
 
 // --- ВАШИ НАСТРОЙКИ FIREBASE ---
 const firebaseConfig = {
-    // Вставьте свои данные сюда (apiKey, authDomain и т.д.)
-    // Те же самые, что были раньше
+  apiKey: "AIzaSyABGlOmgn1cYcOjfO44r9w-XpBuFogVgmM",
+  authDomain: "habitpop-d7f60.firebaseapp.com",
+  projectId: "habitpop-d7f60",
+  storageBucket: "habitpop-d7f60.firebasestorage.app",
+  messagingSenderId: "703042488340",
+  appId: "1:703042488340:web:07488c051bd83163bc3f01"
 };
 
 const app = initializeApp(firebaseConfig);
