@@ -9,33 +9,76 @@
     <link href="https://fonts.googleapis.com/css2?family=Fraunces:opsz,wght@9..144,300;600&family=Inter:wght@400;600&display=swap" rel="stylesheet">
     <link rel="stylesheet" href="style.css">
 </head>
-<body class="login-body">
+<body>
 
-    <div class="container">
-        <div class="auth-card">
-            <div class="decorative-sticker">Beta</div>
-            <h1>HabitPop</h1>
-            <p id="auth-subtitle">Твой спокойный ритм жизни.</p>
-            
-            <form id="authForm">
-                <div class="input-group">
-                    <label>Email</label>
-                    <input type="email" id="email" placeholder="hello@you.com" required>
-                </div>
-                <div class="input-group">
-                    <label>Пароль</label>
-                    <input type="password" id="password" placeholder="••••••••" required>
-                </div>
-                <p id="error-msg" style="color: #ff6b6b; font-size: 0.8rem; display: none; margin-bottom: 10px;"></p>
+    <div style="position: absolute; top: 20px; right: 20px; z-index: 100; display: flex; gap: 10px;">
+        <div class="select-wrapper">
+        <select id="languageSelect" class="styled-select">
+            <option value="ru">🇷🇺 RU</option>
+            <option value="en">🇺🇸 EN</option>
+            <option value="ua">🇺🇦 UA</option>
+            <option value="cs">🇨🇿 CS</option>
+            <option value="de">🇩🇪 DE</option>
+            <option value="pl">🇵🇱 PL</option>
+        </select>
+</div>
+        <button id="themeToggle" class="theme-toggle-btn">🌙</button>
+    </div>
+
+    <div class="split-screen">
+        
+        <div class="split-info">
+            <div class="info-content">
+                <div class="logo-large">Habibi ✦  by ShiftTime</div>
+                <h1 class="hero-title" data-i18n="heroTitle">Верни контроль<br>над своим днем.</h1>
+                <p class="hero-desc" data-i18n="heroDesc">
+                    Минималистичный трекер привычек, созданный для спокойствия. 
+                    Без лишнего шума, только ты и твой прогресс.
+                </p>
                 
-                <button type="submit" class="btn-primary" id="submit-btn">Войти</button>
-            </form>
+                <ul class="features-list">
+                    <li data-i18n="feature1">✨ <strong>Визуальная тишина</strong></li>
+                    <li data-i18n="feature2">🧠 <strong>ADHD Friendly</strong></li>
+                    <li data-i18n="feature3">☁️ <strong>Синхронизация</strong></li>
+                </ul>
 
-            <p id="toggle-auth" style="margin-top: 20px; font-size: 0.9rem; text-decoration: underline; cursor: pointer;">
-                Нет аккаунта? Создать
-            </p>
+                <div class="app-preview">
+                    <div class="preview-placeholder">
+                        <img src="screen.png" alt="Скриншот трекера" style="width: 100%; height: auto; display: block;">
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <div class="split-form">
+            <div class="auth-card">
+                <div class="decorative-sticker">Beta</div>
+                <h2 data-i18n="loginTitle">Добро пожаловать</h2>
+                <p id="auth-subtitle" data-i18n="loginSubtitle">Войдите, чтобы продолжить.</p>
+                
+                <form id="authForm">
+                    <div class="input-group">
+                        <label data-i18n="emailLabel">Email</label>
+                        <input type="email" id="email" placeholder="hello@you.com" required>
+                    </div>
+                    <div class="input-group">
+                        <label data-i18n="passwordLabel">Пароль</label>
+                        <input type="password" id="password" placeholder="••••••••" required>
+                    </div>
+                    
+                    <p id="error-msg" class="error-message"></p>
+                    
+                    <button type="submit" class="btn-primary" id="submit-btn" data-i18n="btnLogin">Войти</button>
+                </form>
+
+                <p id="toggle-auth" class="toggle-link" data-i18n="toggleRegister">
+                    Нет аккаунта? Создать
+                </p>
+            </div>
         </div>
     </div>
+
+    
 
     <script type="module" src="script.js"></script>
 </body>

@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>HabitPop - Трекер</title>
+    <title>Habibi - Трекер</title>
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link href="https://fonts.googleapis.com/css2?family=Fraunces:opsz,wght@9..144,300;600&family=Inter:wght@400;600&display=swap" rel="stylesheet">
@@ -13,26 +13,35 @@
 <body class="tracker-body">
 
     <header>
-        <div class="logo">HabitPop ✦</div>
+        <div class="logo">Habibi ✦</div>
         <div class="user-controls">
-            <div class="sync-status" id="syncStatus">
-                <div class="dot active"></div>
-                <span>Online</span>
-            </div>
-            <button id="logoutBtn" class="btn-logout">Выйти</button>
+        <div class="select-wrapper">
+            <select id="languageSelect" class="styled-select">
+                <option value="ru">🇷🇺 RU</option>
+                <option value="en">🇺🇸 EN</option>
+                <option value="ua">🇺🇦 UA</option>
+                <option value="cs">🇨🇿 CS</option>
+                <option value="de">🇩🇪 DE</option>
+                <option value="pl">🇵🇱 PL</option>
+            </select>
+        </div>
+
+            <button id="themeToggle" class="theme-toggle-btn">🌙</button>
+            
+            <button id="logoutBtn" class="btn-logout" data-i18n="logout">Выйти</button>
         </div>
     </header>
 
     <div class="stats-container">
         <div class="stat-card">
-            <h3>Продуктивность сегодня</h3>
+            <h3 data-i18n="statsDaily">Продуктивность сегодня</h3>
             <div class="chart-wrapper">
                 <canvas id="dailyChart"></canvas>
             </div>
             <p id="dailyText" class="stat-text">0% выполнено</p>
         </div>
         <div class="stat-card">
-            <h3>Топ привычек (Месяц)</h3>
+            <h3 data-i18n="statsMonthly">Топ привычек (Месяц)</h3>
             <div class="chart-wrapper">
                 <canvas id="monthlyChart"></canvas>
             </div>
@@ -46,7 +55,7 @@
     </div>
 
     <div class="controls">
-        <input type="text" id="newHabitInput" placeholder="Новая привычка...">
+        <input type="text" id="newHabitInput" data-i18n-placeholder="newHabitPlaceholder" placeholder="Новая привычка...">
         <button class="btn-add" id="addHabitBtn">+</button>
     </div>
 
@@ -56,6 +65,21 @@
                 </table>
         </div>
     </div>
+
+<footer class="app-footer">
+        <div class="footer-left">
+            Haibibi (by ShiftTime) 2026
+        </div>
+        
+        <div class="footer-center">
+            powered by vibe-coding
+        </div>
+        
+        <div class="footer-right">
+            <button class="footer-link">Support</button>
+            <button class="footer-link">ShiftTime</button>
+        </div>
+    </footer>
 
     <script type="module" src="script.js"></script>
 </body>
