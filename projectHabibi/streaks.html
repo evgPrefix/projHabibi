@@ -1,0 +1,257 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Haibibi - Streaks</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Fraunces:opsz,wght@9..144,300;600&family=Inter:wght@400;600&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="style.css">
+</head>
+<body class="tracker-body">
+
+    <header>
+        <div class="logo" data-i18n="streaksTitle">My Streaks ⚔️</div>
+        
+        <div class="user-controls">
+            <button id="openArchiveBtn" class="theme-toggle-btn" title="Archive">📦</button>
+            <a href="tracker.html" class="theme-toggle-btn" title="Close">✕</a>
+        </div>
+    </header>
+
+    <div class="container" style="padding-bottom: 50px; margin-top: 20px;">
+        
+        <div class="stats-container" style="grid-template-columns: 1fr 1fr; margin-bottom: 30px;">
+            <div class="stat-card streak-hero">
+                <div class="emoji-large" id="mainProdIcon">🔥</div>
+                <h2 id="mainProdCount">0</h2>
+                <p data-i18n="globalFire">Global Fire</p>
+            </div>
+            <div class="stat-card streak-hero">
+                <div class="emoji-large" id="mainCleanIcon">🛡️</div>
+                <h2 id="mainCleanCount">0</h2>
+                <p data-i18n="cleanShield">Clean Shield</p>
+            </div>
+        </div>
+
+        <p class="section-desc" style="text-align: center;" data-i18n="globalFireDesc">
+            "Global Fire" grows if you do at least 1 habit from your Tracker.
+        </p>
+
+        <hr class="divider">
+
+        <h3 class="section-title" data-i18n="battleZoneTitle">🛡️ Battle Zone (Quit Bad Habits)</h3>
+        <p class="section-desc" data-i18n="battleZoneDesc">Mark your victories here.</p>
+        
+        <div id="quitHabitsList" class="streaks-list">
+            <p class="loading-text">Loading battles...</p>
+        </div>
+
+        <div class="add-streak-box">
+            <h3 data-i18n="fightNewTitle">Fight a new addiction</h3>
+            <div class="streak-form">
+                <input type="text" id="newQuitName" data-i18n-placeholder="fightNewPlaceholder" placeholder="Name (e.g. No Sugar)...">
+                <button id="createQuitBtn" class="btn-primary" data-i18n="startFightBtn">Start Fight</button>
+            </div>
+        </div>
+
+        <hr class="divider">
+
+        <h3 class="section-title" data-i18n="trackerHabitsTitle">✨ Tracker Habits (Build)</h3>
+        <p class="section-desc" data-i18n="trackerHabitsDesc">Your individual progress on habits from the Main Tracker.</p>
+        
+        <div id="buildHabitsList" class="streaks-list">
+            <p class="loading-text">Loading habits...</p>
+        </div>
+        
+        <div style="text-align: center; margin-top: 25px;">
+            <a href="tracker.html" class="toggle-link" data-i18n="goToTracker">Go to Tracker to add more ✨</a>
+        </div>
+
+    </div>
+
+    <div id="archiveModal" class="modal">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h2 data-i18n="archiveTitle">Archived Habits</h2>
+                <span class="close-modal">&times;</span>
+            </div>
+            <div id="archiveList"></div>
+        </div>
+    </div>
+
+    <script type="module">
+        import { initializeApp } from "https://www.gstatic.com/firebasejs/10.7.1/firebase-app.js";
+        import { getAuth, onAuthStateChanged } from "https://www.gstatic.com/firebasejs/10.7.1/firebase-auth.js";
+        import { getFirestore, collection, addDoc, query, where, onSnapshot, updateDoc, doc, arrayUnion } from "https://www.gstatic.com/firebasejs/10.7.1/firebase-firestore.js";
+        // ИМПОРТ ПЕРЕВОДОВ
+        import { translations } from "./translations.js";
+
+        // --- ВСТАВЬ СВОИ КЛЮЧИ FIREBASE ---
+        const firebaseConfig = {
+            apiKey: "AIzaSyABGlOmgn1cYcOjfO44r9w-XpBuFogVgmM",
+            authDomain: "habitpop-d7f60.firebaseapp.com",
+            projectId: "habitpop-d7f60",
+            storageBucket: "habitpop-d7f60.firebasestorage.app",
+            messagingSenderId: "703042488340",
+            appId: "1:703042488340:web:07488c051bd83163bc3f01"
+        };
+
+        const app = initializeApp(firebaseConfig);
+        const auth = getAuth(app);
+        const db = getFirestore(app);
+        let currentUser = null;
+        let currentHabits = []; 
+        let currentLang = localStorage.getItem('lang') || 'en'; // Берем язык из памяти
+
+        // --- ПРИМЕНЕНИЕ ЯЗЫКА ПРИ ЗАГРУЗКЕ ---
+        function applyStreaksLanguage() {
+            const t = translations[currentLang];
+            if (!t) return;
+            
+            // Тексты
+            document.querySelectorAll('[data-i18n]').forEach(el => {
+                const key = el.dataset.i18n;
+                if (t[key]) el.innerHTML = t[key];
+            });
+            // Плейсхолдеры
+            document.querySelectorAll('[data-i18n-placeholder]').forEach(el => {
+                const key = el.dataset.i18nPlaceholder;
+                if (t[key]) el.placeholder = t[key];
+            });
+        }
+        
+        // Запускаем перевод сразу
+        applyStreaksLanguage();
+
+        onAuthStateChanged(auth, (user) => {
+            if (user) {
+                currentUser = user;
+                loadStreaks(user.uid);
+                document.getElementById('mainProdCount').innerText = localStorage.getItem('prodStreak') || 0;
+                document.getElementById('mainCleanCount').innerText = localStorage.getItem('cleanStreak') || 0;
+            } else {
+                window.location.href = "index.html";
+            }
+        });
+
+        function loadStreaks(uid) {
+            const q = query(collection(db, "habits"), where("uid", "==", uid));
+            onSnapshot(q, (snapshot) => {
+                const habits = [];
+                snapshot.forEach(doc => habits.push({ id: doc.id, ...doc.data() }));
+                currentHabits = habits; 
+
+                renderQuitSection(habits.filter(h => h.type === 'quit' && !h.archived));
+                renderBuildSection(habits.filter(h => (h.type === 'build' || !h.type) && !h.archived));
+            });
+        }
+
+        function renderQuitSection(habits) {
+            const container = document.getElementById('quitHabitsList');
+            const t = translations[currentLang];
+            
+            if(habits.length === 0) {
+                container.innerHTML = `<div class="empty-state">No active battles. Start one below!</div>`;
+                return;
+            }
+            const todayStr = new Date().toISOString().split('T')[0];
+            let html = '';
+            habits.forEach(h => {
+                const streak = calculateIndividualStreak(h);
+                const isDoneToday = h.checks.includes(todayStr);
+                
+                // Кнопки тоже переводим
+                let actionBlock = isDoneToday 
+                    ? `<div class="status-badge success">${t.heldFirmToday}</div>`
+                    : `<div class="battle-buttons">
+                            <button class="battle-btn success" onclick="window.markHabit('${h.id}', true)">💪 ${t.heldFirm}</button>
+                            <button class="battle-btn fail" onclick="window.markHabit('${h.id}', false)">⚠️ ${t.relapsed}</button>
+                       </div>`;
+                       
+                html += `<div class="streak-row-card">
+                    <div class="streak-info"><h3>⛔ ${h.name}</h3><div class="streak-days">Streak: <strong>${streak}</strong></div></div>
+                    <div class="streak-actions">${actionBlock}</div>
+                </div>`;
+            });
+            container.innerHTML = html;
+        }
+
+        function renderBuildSection(habits) {
+            const container = document.getElementById('buildHabitsList');
+            if(habits.length === 0) {
+                container.innerHTML = `<div class="empty-state">No active habits.</div>`;
+                return;
+            }
+            let html = '';
+            habits.forEach(h => {
+                const streak = calculateIndividualStreak(h);
+                html += `<div class="streak-row-card compact">
+                    <div class="streak-info"><h3>✨ ${h.name}</h3></div>
+                    <div class="streak-count-badge">🔥 ${streak}</div>
+                </div>`;
+            });
+            container.innerHTML = html;
+        }
+
+        function calculateIndividualStreak(habit) {
+            let streak = 0;
+            let checkDate = new Date();
+            const todayStr = new Date().toISOString().split('T')[0];
+            if (!habit.checks.includes(todayStr)) checkDate.setDate(checkDate.getDate() - 1);
+            while (true) {
+                if (habit.checks.includes(checkDate.toISOString().split('T')[0])) {
+                    streak++;
+                    checkDate.setDate(checkDate.getDate() - 1);
+                } else break;
+            }
+            return streak;
+        }
+
+        window.markHabit = async (id, isSuccess) => {
+            if (isSuccess) {
+                await updateDoc(doc(db, "habits", id), { checks: arrayUnion(new Date().toISOString().split('T')[0]) });
+                if (navigator.vibrate) navigator.vibrate([50]);
+            } else {
+                alert("It's okay. Reset and start again tomorrow.");
+            }
+        };
+
+        document.getElementById('createQuitBtn').addEventListener('click', async () => {
+            const name = document.getElementById('newQuitName').value;
+            if (name && currentUser) {
+                await addDoc(collection(db, "habits"), {
+                    uid: currentUser.uid, name: name, type: 'quit', checks: [], createdAt: Date.now(), archived: false
+                });
+                document.getElementById('newQuitName').value = '';
+            }
+        });
+
+        // Архивация (Копия логики)
+        const modal = document.getElementById("archiveModal");
+        const openBtn = document.getElementById("openArchiveBtn");
+        const closeBtn = document.querySelector(".close-modal");
+        
+        if(openBtn) openBtn.onclick = () => { modal.style.display = "block"; renderArchiveList(); }
+        if(closeBtn) closeBtn.onclick = () => modal.style.display = "none";
+        window.onclick = (event) => { if (event.target == modal) modal.style.display = "none"; }
+
+        function renderArchiveList() {
+            const list = document.getElementById('archiveList');
+            const t = translations[currentLang];
+            const archived = currentHabits.filter(h => h.archived);
+            if (archived.length === 0) { list.innerHTML = `<p style="text-align:center;color:#888;">${t.emptyArchive}</p>`; return; }
+            let html = '';
+            archived.forEach(h => {
+                html += `<div class="archive-item"><span class="archive-name">${h.name}</span>
+                <div class="archive-actions"><button class="rate-btn" onclick="window.restoreHabit('${h.id}')">↩️</button></div></div>`;
+            });
+            list.innerHTML = html;
+        }
+        window.restoreHabit = async (id) => {
+            if(confirm('Restore?')) { await updateDoc(doc(db, "habits", id), { archived: false }); renderArchiveList(); }
+        };
+    </script>
+</body>
+</html>

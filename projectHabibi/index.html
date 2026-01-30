@@ -1,9 +1,9 @@
 <!DOCTYPE html>
-<html lang="ru">
+<html lang="en">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>HabitPop - Вход</title>
+    <title>Haibibi - Login</title>
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link href="https://fonts.googleapis.com/css2?family=Fraunces:opsz,wght@9..144,300;600&family=Inter:wght@400;600&display=swap" rel="stylesheet">
@@ -13,15 +13,14 @@
 
     <div style="position: absolute; top: 20px; right: 20px; z-index: 100; display: flex; gap: 10px;">
         <div class="select-wrapper">
-        <select id="languageSelect" class="styled-select">
-            <option value="ru">🇷🇺 RU</option>
-            <option value="en">🇺🇸 EN</option>
-            <option value="ua">🇺🇦 UA</option>
-            <option value="cs">🇨🇿 CS</option>
-            <option value="de">🇩🇪 DE</option>
-            <option value="pl">🇵🇱 PL</option>
-        </select>
-</div>
+            <select id="languageSelect" class="styled-select">
+                <option value="en" selected>🇺🇸 EN</option>
+                <option value="ua">🇺🇦 UA</option>
+                <option value="cs">🇨🇿 CS</option>
+                <option value="de">🇩🇪 DE</option>
+                <option value="pl">🇵🇱 PL</option>
+            </select>
+        </div>
         <button id="themeToggle" class="theme-toggle-btn">🌙</button>
     </div>
 
@@ -29,22 +28,22 @@
         
         <div class="split-info">
             <div class="info-content">
-                <div class="logo-large">Habibi ✦  by ShiftTime</div>
-                <h1 class="hero-title" data-i18n="heroTitle">Верни контроль<br>над своим днем.</h1>
+                <div class="logo-large">Haibibi ✦  by ShiftTime</div>
+                <h1 class="hero-title" data-i18n="heroTitle">Take back control<br>of your day.</h1>
                 <p class="hero-desc" data-i18n="heroDesc">
-                    Минималистичный трекер привычек, созданный для спокойствия. 
-                    Без лишнего шума, только ты и твой прогресс.
+                    Minimalist habit tracker built for peace of mind. 
+                    No noise, just you and your progress.
                 </p>
                 
                 <ul class="features-list">
-                    <li data-i18n="feature1">✨ <strong>Визуальная тишина</strong></li>
+                    <li data-i18n="feature1">✨ <strong>Visual silence</strong></li>
                     <li data-i18n="feature2">🧠 <strong>ADHD Friendly</strong></li>
-                    <li data-i18n="feature3">☁️ <strong>Синхронизация</strong></li>
+                    <li data-i18n="feature3">☁️ <strong>Cloud Sync</strong></li>
                 </ul>
 
                 <div class="app-preview">
                     <div class="preview-placeholder">
-                        <img src="screen.png" alt="Скриншот трекера" style="width: 100%; height: auto; display: block;">
+                        <img src="screen.png" alt="App Screenshot" style="width: 100%; height: auto; display: block;">
                     </div>
                 </div>
             </div>
@@ -53,8 +52,8 @@
         <div class="split-form">
             <div class="auth-card">
                 <div class="decorative-sticker">Beta</div>
-                <h2 data-i18n="loginTitle">Добро пожаловать</h2>
-                <p id="auth-subtitle" data-i18n="loginSubtitle">Войдите, чтобы продолжить.</p>
+                <h2 data-i18n="loginTitle">Welcome back</h2>
+                <p id="auth-subtitle" data-i18n="loginSubtitle">Sign in to continue.</p>
                 
                 <form id="authForm">
                     <div class="input-group">
@@ -62,23 +61,25 @@
                         <input type="email" id="email" placeholder="hello@you.com" required>
                     </div>
                     <div class="input-group">
-                        <label data-i18n="passwordLabel">Пароль</label>
+                        <label data-i18n="passwordLabel">Password</label>
                         <input type="password" id="password" placeholder="••••••••" required>
-                    </div>
-                    
+                    </div>  
                     <p id="error-msg" class="error-message"></p>
                     
-                    <button type="submit" class="btn-primary" id="submit-btn" data-i18n="btnLogin">Войти</button>
+                    <button type="submit" class="btn-primary" id="submit-btn" data-i18n="btnLogin">Sign In</button>
+
+                    <div class="forgot-pass-wrapper" style="text-align: right; margin-top: 5px; margin-bottom: 15px;">
+                        <a href="#" id="forgot-password" style="font-size: 0.8rem; color: var(--text-muted); text-decoration: none;" data-i18n="forgotPassword">Forgot password?</a>
+                    </div>
+
                 </form>
 
                 <p id="toggle-auth" class="toggle-link" data-i18n="toggleRegister">
-                    Нет аккаунта? Создать
+                    No account? Create one
                 </p>
             </div>
         </div>
     </div>
-
-    
 
     <script type="module" src="script.js"></script>
 </body>

@@ -226,20 +226,108 @@ th.is-today {
 .delete-btn { margin-left: 10px; color: #aaa; border: none; background: transparent; cursor: pointer; font-size: 1.2rem; }
 .delete-btn:hover { color: red; }
 
-/* Темная тема */
+/* ==========================================================================
+   8. PREMIUM DARK THEME (Обновленная палитра)
+   ========================================================================== */
+
 [data-theme="dark"] {
-    --bg-color: #121212; --card-bg: #1E1E1E; --text-main: #E0E0E0; --border-color: #555555;
-    --shadow: 4px 4px 0px #000000; --accent-purple: #4D4D85; --accent-green: #3D5C3D;
-    --accent-yellow: #666020; --accent-pink: #854D6B;
+    /* --- Основные переменные --- */
+    --bg-main: #121212;          /* Глубокий матовый фон (не чистый черный) */
+    --text-main: #E0E0E0;        /* Мягкий белый (чтобы не резало глаза) */
+    --text-muted: #A0A0A0;       /* Приглушенный серый для второстепенного */
+    --border-color: #2C2C2C;     /* Очень тонкие темные границы */
+    --card-bg: #1E1E1E;          /* Фон для полей ввода и карточек */
+    --hover-bg: #2A2A2A;         /* Цвет при наведении */
+    --accent-color: #81C784;     /* Более пастельный зеленый для галочек */
 }
-[data-theme="dark"] .split-info { background-color: #2a2a40; }
-[data-theme="dark"] .split-info::before { background-image: radial-gradient(#ffffff 1px, transparent 1px); opacity: 0.05; }
-[data-theme="dark"] th { background: var(--card-bg); }
-[data-theme="dark"] td:first-child, [data-theme="dark"] th:first-child { background: var(--card-bg); }
-[data-theme="dark"] .check-btn.completed { background-color: var(--accent-green); border-color: #fff; }
-[data-theme="dark"] .check-btn.completed::after { color: #fff; }
-[data-theme="dark"] .btn-logout:hover { color: #ff6b6b; border-color: #ff6b6b; }
-[data-theme="dark"] .styled-select { background-image: url("data:image/svg+xml;charset=UTF-8,%3csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='none' stroke='%23fff' stroke-width='3' stroke-linecap='round' stroke-linejoin='round'%3e%3cpolyline points='6 9 12 15 18 9'%3e%3c/polyline%3e%3c/svg%3e"); }
+
+/* Применяем фон и цвет ко всему телу */
+[data-theme="dark"] body {
+    background-color: var(--bg-main);
+    color: var(--text-main);
+}
+
+/* --- Хедер и Логотип --- */
+[data-theme="dark"] .logo {
+    color: #FFFFFF; /* Логотип делаем ярче */
+}
+
+[data-theme="dark"] .auth-btn {
+    border-color: var(--text-main);
+    color: var(--text-main);
+}
+[data-theme="dark"] .auth-btn:hover {
+    background: #FFFFFF;
+    color: #000000;
+}
+
+/* --- Поля ввода (Input) --- */
+[data-theme="dark"] input, 
+[data-theme="dark"] select {
+    background-color: var(--card-bg);
+    border: 1px solid var(--border-color);
+    color: var(--text-main);
+    box-shadow: none; /* Убираем тени, в темной теме они лишние */
+}
+
+[data-theme="dark"] input:focus {
+    border-color: var(--accent-color);
+    background-color: #252525;
+}
+
+/* --- Таблица трекера --- */
+[data-theme="dark"] .tracker-table th {
+    color: var(--text-muted);
+    font-weight: 500;
+}
+
+[data-theme="dark"] .tracker-table td {
+    border-bottom: 1px solid var(--border-color); /* Еле заметные линии */
+}
+
+[data-theme="dark"] .tracker-table tr:hover {
+    background-color: rgba(255, 255, 255, 0.03); /* Легкая подсветка строки */
+}
+
+/* --- Чекбоксы (Клеточки) --- */
+[data-theme="dark"] .check-btn {
+    background-color: #1E1E1E; /* Темная ячейка */
+    border: 1px solid #333;
+}
+
+[data-theme="dark"] .check-btn:hover {
+    border-color: #666;
+}
+
+/* Активная галочка (выполненная привычка) */
+[data-theme="dark"] .check-btn.completed {
+    background-color: var(--accent-color);
+    border-color: var(--accent-color);
+    box-shadow: 0 0 10px rgba(129, 199, 132, 0.4); /* Небольшое свечение */
+}
+
+/* --- Кнопки удаления (Крестики) --- */
+[data-theme="dark"] .delete-btn {
+    background: #2C2C2C;
+    color: #888;
+}
+[data-theme="dark"] .delete-btn:hover {
+    background: #ef5350; /* Мягкий красный */
+    color: white;
+}
+
+/* --- Футер (Подвал) --- */
+[data-theme="dark"] .app-footer {
+    border-top: 1px solid var(--border-color);
+    color: var(--text-muted);
+}
+
+[data-theme="dark"] .footer-link {
+    color: var(--text-muted);
+}
+[data-theme="dark"] .footer-link:hover {
+    color: var(--text-main);
+}
 
 /* Мобильная версия */
 @media (max-width: 900px) {
@@ -322,4 +410,497 @@ th.is-today {
         text-align: center;
         border-top: none; /* На телефоне линию можно убрать для легкости */
     }
+}
+
+/* ==========================================================================
+   9. ARCHIVE MODAL & BUTTONS
+   ========================================================================== */
+
+/* Кнопка в меню */
+.nav-btn-text {
+    background: none;
+    border: none;
+    cursor: pointer;
+    font-family: 'Inter', sans-serif;
+    font-weight: 600;
+    color: var(--text-muted);
+    transition: color 0.2s;
+    font-size: 0.9rem;
+    margin-right: 10px;
+}
+.nav-btn-text:hover { color: var(--text-main); }
+
+/* Модальное окно (фон) */
+.modal {
+    display: none; /* Скрыто по умолчанию */
+    position: fixed;
+    z-index: 1000;
+    left: 0; top: 0;
+    width: 100%; height: 100%;
+    background-color: rgba(0,0,0,0.5); /* Затемнение сзади */
+    backdrop-filter: blur(5px);
+}
+
+/* Контент окна */
+.modal-content {
+    background-color: var(--bg-main);
+    margin: 10% auto;
+    padding: 25px;
+    border: 1px solid var(--border-color);
+    width: 90%;
+    max-width: 600px;
+    border-radius: 12px;
+    box-shadow: 0 10px 30px rgba(0,0,0,0.2);
+    position: relative;
+    max-height: 70vh;
+    overflow-y: auto;
+}
+
+[data-theme="dark"] .modal-content {
+    background-color: #1E1E1E;
+}
+
+/* Хедер окна */
+.modal-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 20px;
+    border-bottom: 1px solid var(--border-color);
+    padding-bottom: 10px;
+}
+
+.close-modal {
+    color: var(--text-muted);
+    font-size: 28px;
+    font-weight: bold;
+    cursor: pointer;
+}
+.close-modal:hover { color: var(--text-main); }
+
+/* Элемент списка в архиве */
+.archive-item {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 15px;
+    border-bottom: 1px solid var(--border-color);
+    gap: 15px;
+}
+
+.archive-name {
+    font-weight: 500;
+    font-size: 1rem;
+}
+
+/* Кнопки оценки */
+.archive-actions {
+    display: flex;
+    gap: 8px;
+}
+
+.rate-btn {
+    padding: 6px 12px;
+    border-radius: 6px;
+    border: 1px solid var(--border-color);
+    background: transparent;
+    cursor: pointer;
+    font-size: 0.8rem;
+    color: var(--text-muted);
+    transition: all 0.2s;
+}
+
+/* Зеленая кнопка (Success) */
+.rate-btn.success:hover, .rate-btn.success.active {
+    background-color: rgba(76, 175, 80, 0.1);
+    color: #4CAF50;
+    border-color: #4CAF50;
+}
+
+/* Красная кнопка (Fail) */
+.rate-btn.fail:hover, .rate-btn.fail.active {
+    background-color: rgba(244, 67, 54, 0.1);
+    color: #F44336;
+    border-color: #F44336;
+}
+
+/* Кнопка архивации в главной таблице (иконка коробки) */
+.archive-action-btn {
+    background: none;
+    border: none;
+    cursor: pointer;
+    font-size: 1.1rem;
+    opacity: 0.4;
+    margin-left: 5px;
+    transition: opacity 0.2s;
+}
+.archive-action-btn:hover { opacity: 1; }
+
+/* ==========================================================================
+   11. STREAKS PAGE STYLES
+   ========================================================================== */
+
+/* Хедер страницы стриков */
+.streak-hero {
+    text-align: center;
+    background: var(--card-bg);
+    padding: 20px;
+    border-radius: 16px;
+    border: 1px solid var(--border-color);
+}
+.streak-hero h2 { font-size: 2.5rem; margin: 5px 0; }
+.streak-hero p { color: var(--text-muted); font-size: 0.9rem; margin: 0; }
+
+.divider {
+    border: 0;
+    border-top: 1px solid var(--border-color);
+    margin: 30px 0;
+    opacity: 0.5;
+}
+
+.section-title { font-size: 1.2rem; margin-bottom: 5px; }
+.section-desc { color: var(--text-muted); font-size: 0.9rem; margin-bottom: 20px; }
+
+/* Карточка Стрика (Строка) */
+.streak-row-card {
+    background: var(--card-bg);
+    border: 1px solid var(--border-color);
+    border-radius: 12px;
+    padding: 15px;
+    margin-bottom: 12px;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    flex-wrap: wrap; /* Чтобы кнопки переносились на мобилке */
+    gap: 10px;
+}
+
+.streak-row-card h3 { margin: 0; font-size: 1rem; }
+.streak-days { font-size: 0.9rem; color: var(--text-muted); margin-top: 4px; }
+
+/* Блок кнопок битвы */
+.battle-buttons {
+    display: flex;
+    gap: 8px;
+}
+
+.battle-btn {
+    padding: 8px 16px;
+    border-radius: 8px;
+    border: none;
+    font-weight: 600;
+    cursor: pointer;
+    font-size: 0.9rem;
+    transition: transform 0.1s;
+}
+.battle-btn:active { transform: scale(0.95); }
+
+/* Цвета кнопок */
+.battle-btn.success {
+    background-color: #4CAF50;
+    color: white;
+}
+.battle-btn.fail {
+    background-color: var(--card-bg);
+    border: 1px solid var(--border-color);
+    color: var(--text-muted);
+}
+.battle-btn.fail:hover {
+    background-color: rgba(244, 67, 54, 0.1);
+    color: #F44336;
+    border-color: #F44336;
+}
+
+/* Статус "Выполнено" */
+.status-badge {
+    padding: 6px 12px;
+    border-radius: 20px;
+    font-size: 0.85rem;
+    font-weight: 600;
+}
+.status-badge.success {
+    background-color: rgba(76, 175, 80, 0.15);
+    color: #4CAF50;
+}
+
+/* Форма добавления стрика */
+.add-streak-box {
+    background: var(--bg-main);
+    border: 1px dashed var(--border-color);
+    border-radius: 12px;
+    padding: 20px;
+    margin-top: 40px;
+}
+.streak-form {
+    display: flex;
+    gap: 10px;
+    margin-top: 15px;
+}
+.streak-form input {
+    flex: 1;
+    padding: 10px;
+}
+
+/* Адаптив для формы */
+@media (max-width: 500px) {
+    .streak-form { flex-direction: column; }
+    .streak-row-card { flex-direction: column; align-items: flex-start; }
+    .streak-actions { width: 100%; display: flex; justify-content: flex-end; }
+}
+
+/* ==========================================================================
+   12. STREAKS BANNER (WIDE)
+   ========================================================================== */
+
+.streaks-banner {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    background-color: var(--card-bg);
+    border: 1px solid var(--border-color);
+    border-radius: 16px;
+    padding: 20px 25px;
+    margin-top: 20px; /* Отступ от графиков сверху */
+    margin-bottom: 30px; /* Отступ от навигации снизу */
+    text-decoration: none;
+    color: var(--text-main);
+    transition: all 0.2s cubic-bezier(0.4, 0, 0.2, 1);
+    box-shadow: 0 4px 6px rgba(0,0,0,0.02);
+    position: relative;
+    overflow: hidden;
+}
+
+/* Эффект при наведении */
+.streaks-banner:hover {
+    transform: translateY(-3px);
+    box-shadow: 0 8px 15px rgba(0,0,0,0.05);
+    border-color: var(--text-muted); /* Легкая подсветка рамки */
+}
+
+/* Левая часть (Текст) */
+.banner-info {
+    display: flex;
+    flex-direction: column;
+    gap: 4px;
+}
+
+.banner-title {
+    font-size: 1.2rem;
+    font-weight: 700;
+    margin: 0;
+    display: flex;
+    align-items: center;
+    gap: 8px;
+}
+
+.banner-subtitle {
+    font-size: 0.9rem;
+    color: var(--text-muted);
+    margin: 0;
+}
+
+/* Правая часть (Цифры) */
+.banner-stats {
+    display: flex;
+    align-items: center;
+    gap: 20px;
+}
+
+.banner-item {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+}
+
+.banner-icon { font-size: 1.4rem; }
+.banner-count { font-size: 1.2rem; font-weight: 700; }
+
+.banner-divider {
+    width: 1px;
+    height: 24px;
+    background-color: var(--border-color);
+}
+
+.banner-arrow {
+    font-size: 1.2rem;
+    color: var(--text-muted);
+    margin-left: 10px;
+    transition: transform 0.2s;
+}
+
+.streaks-banner:hover .banner-arrow {
+    transform: translateX(5px);
+    color: var(--text-main);
+}
+
+/* Адаптив для мобилок */
+@media (max-width: 480px) {
+    .streaks-banner {
+        flex-direction: column;
+        align-items: flex-start;
+        gap: 15px;
+    }
+    .banner-stats {
+        width: 100%;
+        justify-content: space-between;
+    }
+}
+
+/* ==========================================================================
+   13. FIXES & POLISH (Центровка и Формы)
+   ========================================================================== */
+
+/* Исправляем контейнер, чтобы он был по центру (как на главной) */
+.container {
+    max-width: 600px; /* Ограничиваем ширину */
+    margin: 0 auto;   /* Центрируем по горизонтали */
+    padding: 0 20px;  /* Отступы от краев экрана на мобильном */
+    width: 100%;
+    box-sizing: border-box;
+}
+
+/* Исправляем форму "Fight addiction" (Скриншот 2) */
+.add-streak-box {
+    background: var(--card-bg);
+    border: 1px solid var(--border-color); /* Сплошная линия вместо пунктира */
+    border-radius: 16px; /* Закругления как у остальных карточек */
+    padding: 20px;
+    margin-top: 30px;
+    box-shadow: 0 4px 12px rgba(0,0,0,0.03); /* Легкая тень */
+}
+
+.add-streak-box h3 {
+    margin-top: 0;
+    margin-bottom: 15px;
+    font-size: 1.1rem;
+    text-align: center; /* Заголовок по центру */
+}
+
+/* Выравниваем инпут и кнопку в одну линию */
+.streak-form {
+    display: flex;
+    gap: 10px;
+    align-items: center; /* Центрируем по вертикали */
+}
+
+.streak-form input {
+    flex: 1; /* Инпут занимает всё доступное место */
+    padding: 12px;
+    border-radius: 12px;
+    border: 1px solid var(--border-color);
+    background-color: var(--bg-main);
+    color: var(--text-main);
+    font-size: 1rem;
+}
+
+.streak-form input:focus {
+    border-color: var(--accent-color);
+    outline: none;
+}
+
+/* Кнопка Start Fight */
+#createQuitBtn {
+    white-space: nowrap; /* Чтобы текст не переносился */
+    padding: 12px 20px;
+    height: 100%; /* Высота как у инпута */
+    border-radius: 12px;
+}
+
+/* ==========================================================================
+   13. FIXES (Form Layout & Buttons)
+   ========================================================================== */
+
+/* Контейнер формы */
+.streak-form {
+    display: flex;
+    gap: 12px;
+    align-items: stretch; /* Одинаковая высота */
+    width: 100%;
+}
+
+/* ПОЛЕ ВВОДА: Растягиваем на всю доступную ширину */
+.streak-form input {
+    flex: 1; /* Магия: занимает всё свободное место */
+    width: 100%; /* Гарантия ширины */
+    min-width: 0; /* Фикс для Flexbox, чтобы не вылезало */
+    padding: 12px 15px;
+    border-radius: 12px;
+    border: 1px solid var(--border-color);
+    background-color: var(--bg-main);
+    color: var(--text-main);
+    font-size: 1rem;
+}
+
+/* КНОПКА: Занимает места ровно столько, сколько нужно тексту */
+#createQuitBtn {
+    flex: 0 0 auto; /* Не растягиваться и не сжиматься */
+    width: auto;    /* Автоматическая ширина по тексту */
+    padding: 0 20px;
+    white-space: nowrap; /* Текст в одну строку */
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+/* ХЕДЕР: Единый стиль для кнопок сверху */
+.header-icons {
+    display: flex;
+    gap: 10px;
+    align-items: center;
+}
+
+/* Стилизация иконок-ссылок (крестик) такая же как у кнопок */
+a.icon-btn {
+    text-decoration: none;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    color: var(--text-main);
+}
+
+/* ==========================================================================
+   14. FINAL FIXES (Header & Form Layout)
+   ========================================================================== */
+
+/* 1. ХЕДЕР: Квадратные кнопки (как на трекере) */
+.user-controls {
+    display: flex;
+    gap: 10px;
+    align-items: center;
+}
+
+
+/* 2. ФОРМА: Исправляем растянутую кнопку */
+.streak-form {
+    display: flex;
+    gap: 10px;
+    align-items: center;
+    width: 100%;
+}
+
+/* Инпут: Растягивается на максимум */
+.streak-form input {
+    flex-grow: 1; /* Занимает всё свободное место */
+    width: auto;  /* Сбрасываем фиксированную ширину */
+    min-width: 0; /* Важно для flexbox */
+    padding: 12px 15px;
+    border-radius: 12px;
+    border: 1px solid var(--border-color);
+    background-color: var(--bg-main);
+    color: var(--text-main);
+    font-size: 1rem;
+    height: 45px; /* Фиксируем высоту для красоты */
+    box-sizing: border-box;
+}
+
+/* Кнопка: Сжимается до размера текста */
+#createQuitBtn {
+    flex-shrink: 0; /* Не сжиматься меньше текста */
+    width: auto !important; /* ПРИНУДИТЕЛЬНО авто-ширина */
+    padding: 0 20px;
+    height: 45px; /* Высота как у инпута */
+    white-space: nowrap; /* Текст в одну строку */
+    display: flex;
+    align-items: center;
+    justify-content: center;
 }
