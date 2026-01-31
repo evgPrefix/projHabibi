@@ -28,7 +28,8 @@
                 <h2 id="mainProdCount">0</h2>
                 <p data-i18n="globalFire">Global Fire</p>
             </div>
-            <div class="stat-card streak-hero">
+            
+            <div class="stat-card streak-hero" id="cleanShieldCard">
                 <div class="emoji-large" id="mainCleanIcon">🛡️</div>
                 <h2 id="mainCleanCount">0</h2>
                 <p data-i18n="cleanShield">Clean Shield</p>
@@ -84,8 +85,8 @@
     <script type="module">
         import { initializeApp } from "https://www.gstatic.com/firebasejs/10.7.1/firebase-app.js";
         import { getAuth, onAuthStateChanged } from "https://www.gstatic.com/firebasejs/10.7.1/firebase-auth.js";
-        import { getFirestore, collection, addDoc, query, where, onSnapshot, updateDoc, doc, arrayUnion } from "https://www.gstatic.com/firebasejs/10.7.1/firebase-firestore.js";
-        // ИМПОРТ ПЕРЕВОДОВ
+        // ДОБАВИЛ deleteDoc В ИМПОРТ НИЖЕ:
+        import { getFirestore, collection, addDoc, query, where, onSnapshot, updateDoc, deleteDoc, doc, arrayUnion } from "https://www.gstatic.com/firebasejs/10.7.1/firebase-firestore.js";
         import { translations } from "./translations.js";
 
         // --- ВСТАВЬ СВОИ КЛЮЧИ FIREBASE ---
@@ -103,26 +104,20 @@
         const db = getFirestore(app);
         let currentUser = null;
         let currentHabits = []; 
-        let currentLang = localStorage.getItem('lang') || 'en'; // Берем язык из памяти
+        let currentLang = localStorage.getItem('lang') || 'en';
 
-        // --- ПРИМЕНЕНИЕ ЯЗЫКА ПРИ ЗАГРУЗКЕ ---
         function applyStreaksLanguage() {
             const t = translations[currentLang];
             if (!t) return;
-            
-            // Тексты
             document.querySelectorAll('[data-i18n]').forEach(el => {
                 const key = el.dataset.i18n;
                 if (t[key]) el.innerHTML = t[key];
             });
-            // Плейсхолдеры
             document.querySelectorAll('[data-i18n-placeholder]').forEach(el => {
                 const key = el.dataset.i18nPlaceholder;
                 if (t[key]) el.placeholder = t[key];
             });
         }
-        
-        // Запускаем перевод сразу
         applyStreaksLanguage();
 
         onAuthStateChanged(auth, (user) => {
@@ -143,8 +138,24 @@
                 snapshot.forEach(doc => habits.push({ id: doc.id, ...doc.data() }));
                 currentHabits = habits; 
 
-                renderQuitSection(habits.filter(h => h.type === 'quit' && !h.archived));
-                renderBuildSection(habits.filter(h => (h.type === 'build' || !h.type) && !h.archived));
+                // Фильтруем привычки
+                const quitHabits = habits.filter(h => h.type === 'quit' && !h.archived);
+                const buildHabits = habits.filter(h => (h.type === 'build' || !h.type) && !h.archived);
+
+                // --- НОВАЯ ЛОГИКА: СЕРИМ ЩИТ, ЕСЛИ ПУСТО ---
+                const shieldCard = document.getElementById('cleanShieldCard');
+                if (quitHabits.length === 0) {
+                    shieldCard.classList.add('inactive'); // Добавляем класс серости
+                    document.getElementById('mainCleanCount').innerText = '-'; // Ставим прочерк
+                } else {
+                    shieldCard.classList.remove('inactive'); // Убираем серость
+                    // Возвращаем цифру из памяти
+                    document.getElementById('mainCleanCount').innerText = localStorage.getItem('cleanStreak') || 0;
+                }
+                // ------------------------------------------
+
+                renderQuitSection(quitHabits);
+                renderBuildSection(buildHabits);
             });
         }
 
@@ -162,16 +173,21 @@
                 const streak = calculateIndividualStreak(h);
                 const isDoneToday = h.checks.includes(todayStr);
                 
-                // Кнопки тоже переводим
                 let actionBlock = isDoneToday 
                     ? `<div class="status-badge success">${t.heldFirmToday}</div>`
                     : `<div class="battle-buttons">
                             <button class="battle-btn success" onclick="window.markHabit('${h.id}', true)">💪 ${t.heldFirm}</button>
                             <button class="battle-btn fail" onclick="window.markHabit('${h.id}', false)">⚠️ ${t.relapsed}</button>
                        </div>`;
-                       
+                
+                // ДОБАВИЛ КНОПКУ УДАЛЕНИЯ (КРЕСТИК) РЯДОМ С ИМЕНЕМ
                 html += `<div class="streak-row-card">
-                    <div class="streak-info"><h3>⛔ ${h.name}</h3><div class="streak-days">Streak: <strong>${streak}</strong></div></div>
+                    <div class="streak-info">
+                        <h3>⛔ ${h.name} 
+                            <button class="delete-streak-btn" onclick="window.deleteStreak('${h.id}')" title="Delete">×</button>
+                        </h3>
+                        <div class="streak-days">Streak: <strong>${streak}</strong></div>
+                    </div>
                     <div class="streak-actions">${actionBlock}</div>
                 </div>`;
             });
@@ -218,6 +234,13 @@
             }
         };
 
+        // НОВАЯ ФУНКЦИЯ УДАЛЕНИЯ
+        window.deleteStreak = async (id) => {
+            if(confirm("Delete this battle forever?")) {
+                await deleteDoc(doc(db, "habits", id));
+            }
+        };
+
         document.getElementById('createQuitBtn').addEventListener('click', async () => {
             const name = document.getElementById('newQuitName').value;
             if (name && currentUser) {
@@ -228,7 +251,7 @@
             }
         });
 
-        // Архивация (Копия логики)
+        // Архивация
         const modal = document.getElementById("archiveModal");
         const openBtn = document.getElementById("openArchiveBtn");
         const closeBtn = document.querySelector(".close-modal");
