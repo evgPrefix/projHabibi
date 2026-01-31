@@ -227,115 +227,133 @@ th.is-today {
 .delete-btn:hover { color: red; }
 
 /* ==========================================================================
-   8. PREMIUM DARK THEME (Обновленная палитра)
+   7. ТЕМНАЯ ТЕМА (DARK MODE) - ПОЛНЫЙ ФИКС
    ========================================================================== */
-
 [data-theme="dark"] {
-    /* --- Основные переменные --- */
-    --bg-main: #121212;          /* Глубокий матовый фон (не чистый черный) */
-    --text-main: #E0E0E0;        /* Мягкий белый (чтобы не резало глаза) */
-    --text-muted: #A0A0A0;       /* Приглушенный серый для второстепенного */
-    --border-color: #2C2C2C;     /* Очень тонкие темные границы */
-    --card-bg: #1E1E1E;          /* Фон для полей ввода и карточек */
-    --hover-bg: #2A2A2A;         /* Цвет при наведении */
-    --accent-color: #81C784;     /* Более пастельный зеленый для галочек */
+    /* --- Переопределение переменных --- */
+    --bg-main: #121212;
+    --bg-color: #121212;
+    --card-bg: #1E1E1E;       /* Темно-серый для карточек */
+    --text-main: #E0E0E0;     /* Светлый текст */
+    --text-muted: #A0A0A0;    /* Серый текст */
+    --border-color: #333333;  /* Темные границы */
+    --hover-bg: #2C2C2C;      /* Цвет при наведении */
+    --accent-color: #81C784;  /* Зеленый акцент */
+    --shadow: none;           /* Тени убираем, в темноте они выглядят грязно */
 }
 
-/* Применяем фон и цвет ко всему телу */
+/* 1. Глобальный фон и текст */
 [data-theme="dark"] body {
     background-color: var(--bg-main);
     color: var(--text-main);
 }
 
-/* --- Хедер и Логотип --- */
-[data-theme="dark"] .logo {
-    color: #FFFFFF; /* Логотип делаем ярче */
-}
-
-[data-theme="dark"] .auth-btn {
-    border-color: var(--text-main);
-    color: var(--text-main);
-}
-[data-theme="dark"] .auth-btn:hover {
-    background: #FFFFFF;
-    color: #000000;
-}
-
-/* --- Поля ввода (Input) --- */
-[data-theme="dark"] input, 
-[data-theme="dark"] select {
+/* 2. Все карточки и блоки (Трекер, Статистика, Стрики, Баннеры) */
+[data-theme="dark"] .stat-card,
+[data-theme="dark"] .tracker-container,
+[data-theme="dark"] .streaks-banner,
+[data-theme="dark"] .add-streak-box,
+[data-theme="dark"] .streak-row-card,
+[data-theme="dark"] .auth-card,
+[data-theme="dark"] .modal-content {
     background-color: var(--card-bg);
-    border: 1px solid var(--border-color);
+    border-color: var(--border-color);
+    box-shadow: none;
+}
+
+/* 3. Поля ввода и Выпадающие списки */
+[data-theme="dark"] input, 
+[data-theme="dark"] select,
+[data-theme="dark"] .styled-select {
+    background-color: #252525; /* Чуть светлее фона карточки, чтобы выделялось */
+    border-color: var(--border-color);
     color: var(--text-main);
-    box-shadow: none; /* Убираем тени, в темной теме они лишние */
+    box-shadow: none;
 }
-
-[data-theme="dark"] input:focus {
-    border-color: var(--accent-color);
-    background-color: #252525;
-}
-
-/* --- Таблица трекера --- */
-[data-theme="dark"] .tracker-table th {
-    color: var(--text-muted);
-    font-weight: 500;
-}
-
-[data-theme="dark"] .tracker-table td {
-    border-bottom: 1px solid var(--border-color); /* Еле заметные линии */
-}
-
-[data-theme="dark"] .tracker-table tr:hover {
-    background-color: rgba(255, 255, 255, 0.03); /* Легкая подсветка строки */
-}
-
-/* --- Чекбоксы (Клеточки) --- */
-[data-theme="dark"] .check-btn {
-    background-color: #1E1E1E; /* Темная ячейка */
-    border: 1px solid #333;
-}
-
-[data-theme="dark"] .check-btn:hover {
+[data-theme="dark"] input:focus, 
+[data-theme="dark"] select:focus {
     border-color: #666;
+    background-color: #2C2C2C;
 }
 
-/* Активная галочка (выполненная привычка) */
+/* Фикс стрелочки в селекте (инвертируем цвет svg на белый) */
+[data-theme="dark"] .styled-select {
+    background-image: url("data:image/svg+xml;charset=UTF-8,%3csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='none' stroke='%23E0E0E0' stroke-width='3' stroke-linecap='round' stroke-linejoin='round'%3e%3cpolyline points='6 9 12 15 18 9'%3e%3c/polyline%3e%3c/svg%3e");
+}
+
+/* 4. Кнопки (Иконки, Навигация, Битва) */
+[data-theme="dark"] .icon-btn,
+[data-theme="dark"] .theme-toggle-btn,
+[data-theme="dark"] .nav-btn,
+[data-theme="dark"] .battle-btn.fail {
+    background-color: var(--card-bg);
+    border-color: var(--border-color);
+    color: var(--text-main);
+    box-shadow: none;
+}
+[data-theme="dark"] .icon-btn:hover,
+[data-theme="dark"] .nav-btn:hover {
+    background-color: var(--hover-bg);
+    border-color: #555;
+}
+
+/* Кнопка "Удалить" (Крестик) */
+[data-theme="dark"] .delete-btn, 
+[data-theme="dark"] .delete-streak-btn,
+[data-theme="dark"] .archive-action-btn {
+    color: #666;
+}
+[data-theme="dark"] .delete-btn:hover, 
+[data-theme="dark"] .delete-streak-btn:hover {
+    color: #ef5350; /* Красный при наведении */
+}
+
+/* 5. Таблица трекера */
+[data-theme="dark"] th {
+    background-color: var(--card-bg);
+    border-color: var(--border-color);
+    color: var(--text-main);
+}
+[data-theme="dark"] td {
+    border-bottom: 1px solid var(--border-color);
+}
+[data-theme="dark"] .tracker-table tr:hover {
+    background-color: rgba(255, 255, 255, 0.03);
+}
+/* Текущий день (выделение) */
+[data-theme="dark"] th.is-today {
+    background-color: #333 !important; /* Темно-серый вместо розового */
+    color: #fff !important;
+    border-color: #555;
+}
+
+/* 6. Чекбоксы (Клеточки) */
+[data-theme="dark"] .check-btn {
+    background-color: #252525;
+    border-color: #444;
+}
+[data-theme="dark"] .check-btn:hover {
+    border-color: #777;
+}
+/* Активная галочка */
 [data-theme="dark"] .check-btn.completed {
     background-color: var(--accent-color);
     border-color: var(--accent-color);
-    box-shadow: 0 0 10px rgba(129, 199, 132, 0.4); /* Небольшое свечение */
+    /* Легкое свечение */
+    box-shadow: 0 0 8px rgba(129, 199, 132, 0.3);
+}
+[data-theme="dark"] .check-btn.completed::after {
+    color: #121212; /* Черная галочка на зеленом фоне */
 }
 
-/* --- Кнопки удаления (Крестики) --- */
-[data-theme="dark"] .delete-btn {
-    background: #2C2C2C;
-    color: #888;
+/* 7. Элементы стриков */
+[data-theme="dark"] .streak-hero.inactive {
+    opacity: 0.3; /* Еще прозрачнее в темноте */
+    filter: grayscale(100%);
 }
-[data-theme="dark"] .delete-btn:hover {
-    background: #ef5350; /* Мягкий красный */
-    color: white;
+[data-theme="dark"] .divider {
+    border-color: #333;
 }
-
-/* --- Футер (Подвал) --- */
-[data-theme="dark"] .app-footer {
-    border-top: 1px solid var(--border-color);
-    color: var(--text-muted);
-}
-
-[data-theme="dark"] .footer-link {
-    color: var(--text-muted);
-}
-[data-theme="dark"] .footer-link:hover {
-    color: var(--text-main);
-}
-
-/* Мобильная версия */
-@media (max-width: 900px) {
-    .split-screen { flex-direction: column-reverse; }
-    .split-info { border-right: none; border-top: 3px solid var(--border-color); padding: 30px 20px; }
-    .hero-title { font-size: 2rem; } .split-form { min-height: 80vh; }
-}
-@media (max-width: 700px) { .stats-container { grid-template-columns: 1fr; } }
 
 
 /* ==========================================================================
@@ -410,7 +428,37 @@ th.is-today {
         text-align: center;
         border-top: none; /* На телефоне линию можно убрать для легкости */
     }
+
+    /* 1. Уменьшаем логотип, чтобы не толкался */
+    .logo {
+        font-size: 1.4rem; 
+    }
+
+    /* 2. Уменьшаем зазоры между кнопками */
+    .user-controls {
+        gap: 6px; /* Было 10px */
+    }
+
+    /* 3. Делаем кнопки чуть компактнее (были 42px) */
+    .icon-btn, .theme-toggle-btn, .nav-btn, .styled-select {
+        width: 36px;
+        height: 36px;
+        font-size: 1rem; /* Иконки внутри чуть меньше */
+    }
+    
+    /* 4. Сжимаем селектор языка */
+    .styled-select {
+        padding: 0 0 0 8px; /* Меньше отступов внутри */
+        background-position: right 4px center; /* Стрелочка ближе */
+    }
+    
+    /* Убираем лишние отступы у хедера */
+    header {
+        margin-bottom: 20px;
+        padding: 0 5px; /* Безопасный отступ от краев */
+    }
 }
+
 
 /* ==========================================================================
    9. ARCHIVE MODAL & BUTTONS
